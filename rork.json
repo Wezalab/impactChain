@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "ImpactChain",
+      "path": "expo",
+      "framework": "react-native"
+    }
+  ]
+}
