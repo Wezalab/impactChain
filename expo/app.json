@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.9490kbde8m7clcyqqga7g"
+      "package": "com.wezalab.impactchain"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -39,6 +39,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": "https://rork.com/"
+      },
+      "eas": {
+        "projectId": "9651cd8e-c94f-4d5b-8c92-7d2b867330b5"
+      }
     }
   }
 }
