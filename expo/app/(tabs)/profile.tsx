@@ -1,4 +1,4 @@
-import { Wallet, Shield, Bell, ExternalLink, ChevronRight, Copy, TrendingUp, TrendingDown, LogOut } from "lucide-react-native";
+import { Wallet, Shield, Bell, ExternalLink, ChevronRight, Copy, TrendingUp, TrendingDown, LogOut, Send } from "lucide-react-native";
 import React, { useCallback, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Animated, Platform } from "react-native";
 import * as Haptics from "expo-haptics";
@@ -71,7 +71,12 @@ export default function ImpactChainProfile() {
       </View>
       <Text style={st.sectionTitle}>Portfolio</Text>
       <View style={st.portfolioCard}>
-        <View style={st.portfolioHeader}><Text style={st.portfolioLabel}>Total Balance</Text><Text style={st.portfolioTotal}>${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text></View>
+        <View style={st.portfolioHeader}>
+          <View style={st.portfolioHeaderRow}>
+            <View><Text style={st.portfolioLabel}>Total Balance</Text><Text style={st.portfolioTotal}>${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text></View>
+            <TouchableOpacity style={st.sendBtn} activeOpacity={0.8} onPress={() => router.push("/send")} testID="send-btn"><Send size={16} color="#fff" /><Text style={st.sendBtnText}>Send</Text></TouchableOpacity>
+          </View>
+        </View>
         {walletBalances.map((b) => (
           <View key={b.symbol} style={st.balanceRow}>
             <View style={st.balanceLeft}><View style={st.tokenIcon}><Text style={st.tokenIconText}>{b.symbol.charAt(0)}</Text></View><View><Text style={st.tokenName}>{b.currency}</Text><Text style={st.tokenNetwork}>{b.network}</Text></View></View>
@@ -120,8 +125,11 @@ const st = StyleSheet.create({
   sectionTitle: { fontSize: 17, fontWeight: "700" as const, color: Colors.dark.text, paddingHorizontal: 20, marginTop: 24, marginBottom: 12 },
   portfolioCard: { marginHorizontal: 20, backgroundColor: Colors.dark.surface, borderRadius: 16, borderWidth: 1, borderColor: Colors.dark.border, overflow: "hidden" },
   portfolioHeader: { padding: 18, borderBottomWidth: 1, borderBottomColor: Colors.dark.border },
+  portfolioHeaderRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   portfolioLabel: { fontSize: 12, color: Colors.dark.textMuted, marginBottom: 4 },
   portfolioTotal: { fontSize: 26, fontWeight: "800" as const, color: Colors.dark.text, letterSpacing: -0.5 },
+  sendBtn: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: Colors.dark.accent, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 },
+  sendBtnText: { fontSize: 14, fontWeight: "700" as const, color: "#fff" },
   balanceRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 18, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: Colors.dark.border },
   balanceLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
   tokenIcon: { width: 36, height: 36, borderRadius: 12, backgroundColor: Colors.dark.surfaceLight, alignItems: "center", justifyContent: "center" },

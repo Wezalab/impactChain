@@ -61,6 +61,7 @@ function RootLayoutNav() {
         <Stack.Screen name="login" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="project/[id]" options={{ title: "Project Details", presentation: "card" }} />
+        <Stack.Screen name="send" options={{ presentation: "modal", headerShown: false, animation: "slide_from_bottom" }} />
         <Stack.Screen name="modal" options={{ presentation: "modal", headerShown: false }} />
       </Stack>
     </AuthGate>
