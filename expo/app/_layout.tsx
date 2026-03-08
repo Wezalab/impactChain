@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider, useAuth } from "@/providers/AuthProvider";
+import { ProjectsProvider } from "@/providers/ProjectsProvider";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -62,6 +63,9 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="project/[id]" options={{ title: "Project Details", presentation: "card" }} />
         <Stack.Screen name="send" options={{ presentation: "modal", headerShown: false, animation: "slide_from_bottom" }} />
+        <Stack.Screen name="create-project" options={{ presentation: "modal", headerShown: false, animation: "slide_from_bottom" }} />
+        <Stack.Screen name="receive" options={{ presentation: "modal", headerShown: false, animation: "slide_from_bottom" }} />
+        <Stack.Screen name="manage-funds" options={{ presentation: "modal", headerShown: false, animation: "slide_from_bottom" }} />
         <Stack.Screen name="modal" options={{ presentation: "modal", headerShown: false }} />
       </Stack>
     </AuthGate>
@@ -79,7 +83,9 @@ export default function RootLayout() {
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: BG }}>
         <StatusBar style="light" />
         <AuthProvider>
-          <RootLayoutNav />
+          <ProjectsProvider>
+            <RootLayoutNav />
+          </ProjectsProvider>
         </AuthProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>

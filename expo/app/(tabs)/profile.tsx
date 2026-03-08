@@ -1,4 +1,4 @@
-import { Wallet, Shield, Bell, ExternalLink, ChevronRight, Copy, TrendingUp, TrendingDown, LogOut, Send } from "lucide-react-native";
+import { Wallet, Shield, Bell, ExternalLink, ChevronRight, Copy, TrendingUp, TrendingDown, LogOut, Send, ArrowDownLeft, PiggyBank, Plus } from "lucide-react-native";
 import React, { useCallback, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Animated, Platform } from "react-native";
 import * as Haptics from "expo-haptics";
@@ -6,6 +6,8 @@ import { router } from "expo-router";
 import Colors from "@/constants/colors";
 import { walletBalances } from "@/mocks/metrics";
 import { useAuth, shortenAddress } from "@/providers/AuthProvider";
+
+import { useProjects } from "@/providers/ProjectsProvider";
 
 const MENU = [
   { id: "wallet", label: "Connected Wallets", sub: "Manage connections", icon: Wallet },
@@ -16,6 +18,8 @@ const MENU = [
 
 export default function ImpactChainProfile() {
   const { wallet, disconnect } = useAuth();
+  const { userProjects, totalEarnings } = useProjects();
+  const publishedCount = userProjects.filter((p) => p.published).length;
   const fade = useRef(new Animated.Value(0)).current;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { Animated.timing(fade, { toValue: 1, duration: 500, useNativeDriver: true }).start(); }, []);
@@ -69,6 +73,33 @@ export default function ImpactChainProfile() {
           <View style={st.profileStat}><Text style={st.profileStatValue}>836</Text><Text style={st.profileStatLabel}>Verifications</Text></View>
         </View>
       </View>
+      <Text style={st.sectionTitle}>Quick Actions</Text>
+      <View style={st.actionsRow}>
+        <TouchableOpacity style={st.actionCard} activeOpacity={0.8} onPress={() => router.push("/create-project")} testID="create-project-btn">
+          <View style={st.actionIconWrap}><Plus size={20} color={Colors.dark.accent} /></View>
+          <Text style={st.actionLabel}>Create{"\n"}Project</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={st.actionCard} activeOpacity={0.8} onPress={() => router.push("/receive")} testID="receive-btn">
+          <View style={[st.actionIconWrap, { backgroundColor: Colors.dark.infoMuted }]}><ArrowDownLeft size={20} color={Colors.dark.info} /></View>
+          <Text style={st.actionLabel}>Receive{"\n"}Funds</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={st.actionCard} activeOpacity={0.8} onPress={() => router.push("/manage-funds")} testID="manage-funds-btn">
+          <View style={[st.actionIconWrap, { backgroundColor: Colors.dark.warningMuted }]}><PiggyBank size={20} color={Colors.dark.warning} /></View>
+          <Text style={st.actionLabel}>Manage{"\n"}Funds</Text>
+        </TouchableOpacity>
+      </View>
+
+      {publishedCount > 0 && (
+        <TouchableOpacity style={st.earningsCard} activeOpacity={0.8} onPress={() => router.push("/manage-funds")} testID="earnings-card">
+          <View style={st.earningsLeft}>
+            <Text style={st.earningsLabel}>Project Earnings</Text>
+            <Text style={st.earningsValue}>${totalEarnings.toLocaleString("en-US", { minimumFractionDigits: 2 })}</Text>
+            <Text style={st.earningsSub}>{publishedCount} published project{publishedCount !== 1 ? "s" : ""}</Text>
+          </View>
+          <ChevronRight size={18} color={Colors.dark.textMuted} />
+        </TouchableOpacity>
+      )}
+
       <Text style={st.sectionTitle}>Portfolio</Text>
       <View style={st.portfolioCard}>
         <View style={st.portfolioHeader}>
@@ -153,6 +184,15 @@ const st = StyleSheet.create({
   walletNetworkText: { fontSize: 11, fontWeight: "600" as const },
   disconnectBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginHorizontal: 20, marginTop: 24, paddingVertical: 14, borderRadius: 14, backgroundColor: Colors.dark.errorMuted, borderWidth: 1, borderColor: Colors.dark.error + "30" },
   disconnectText: { fontSize: 15, fontWeight: "600" as const, color: Colors.dark.error },
+  actionsRow: { flexDirection: "row", paddingHorizontal: 20, gap: 10, marginBottom: 4 },
+  actionCard: { flex: 1, alignItems: "center", backgroundColor: Colors.dark.surface, borderRadius: 16, paddingVertical: 16, borderWidth: 1, borderColor: Colors.dark.border, gap: 8 },
+  actionIconWrap: { width: 44, height: 44, borderRadius: 14, backgroundColor: Colors.dark.accentMuted, alignItems: "center", justifyContent: "center" },
+  actionLabel: { fontSize: 12, fontWeight: "600" as const, color: Colors.dark.textSecondary, textAlign: "center" as const, lineHeight: 16 },
+  earningsCard: { flexDirection: "row", alignItems: "center", marginHorizontal: 20, marginTop: 12, backgroundColor: Colors.dark.surface, borderRadius: 16, padding: 18, borderWidth: 1, borderColor: Colors.dark.accent + "30" },
+  earningsLeft: { flex: 1 },
+  earningsLabel: { fontSize: 12, color: Colors.dark.textMuted, marginBottom: 4 },
+  earningsValue: { fontSize: 22, fontWeight: "800" as const, color: Colors.dark.accent, letterSpacing: -0.5 },
+  earningsSub: { fontSize: 12, color: Colors.dark.textMuted, marginTop: 2 },
   footer: { alignItems: "center", marginTop: 24, paddingBottom: 20 },
   footerText: { fontSize: 13, color: Colors.dark.textMuted, fontWeight: "500" as const },
   footerSub: { fontSize: 11, color: Colors.dark.textMuted, marginTop: 2 },

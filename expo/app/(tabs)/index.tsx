@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { DollarSign, Users, ArrowUpDown, ShieldCheck, TrendingUp, ChevronRight, Zap, Globe, Send } from "lucide-react-native";
+import { DollarSign, Users, ArrowUpDown, ShieldCheck, TrendingUp, ChevronRight, Zap, Globe, Send, ArrowDownLeft, Plus } from "lucide-react-native";
 import React, { useCallback, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Animated, Dimensions } from "react-native";
 import Colors from "@/constants/colors";
@@ -95,9 +95,14 @@ export default function ImpactChainDashboard() {
       <View style={st.txContainer}>{recentTxs.map((tx) => <RecentTx key={tx.id} tx={tx} />)}</View>
       <View style={{ height: 20 }} />
     </ScrollView>
-    <TouchableOpacity style={st.fab} activeOpacity={0.85} onPress={() => router.push("/send")} testID="send-fab">
-      <Send size={22} color="#fff" />
-    </TouchableOpacity>
+    <View style={st.fabGroup}>
+      <TouchableOpacity style={st.fabSecondary} activeOpacity={0.85} onPress={() => router.push("/receive")} testID="receive-fab">
+        <ArrowDownLeft size={18} color={Colors.dark.accent} />
+      </TouchableOpacity>
+      <TouchableOpacity style={st.fab} activeOpacity={0.85} onPress={() => router.push("/send")} testID="send-fab">
+        <Send size={22} color="#fff" />
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -149,5 +154,7 @@ const st = StyleSheet.create({
   txRight: { alignItems: "flex-end" },
   txAmount: { fontSize: 13, fontWeight: "600" as const, color: Colors.dark.text },
   txStatus: { fontSize: 11, fontWeight: "500" as const, marginTop: 2, textTransform: "capitalize" as const },
-  fab: { position: "absolute" as const, bottom: 24, right: 20, width: 56, height: 56, borderRadius: 18, backgroundColor: Colors.dark.accent, alignItems: "center" as const, justifyContent: "center" as const, shadowColor: Colors.dark.accent, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 12, elevation: 8 },
+  fabGroup: { position: "absolute" as const, bottom: 24, right: 20, alignItems: "center" as const, gap: 10 },
+  fabSecondary: { width: 44, height: 44, borderRadius: 14, backgroundColor: Colors.dark.surface, borderWidth: 1, borderColor: Colors.dark.accent + "40", alignItems: "center" as const, justifyContent: "center" as const },
+  fab: { width: 56, height: 56, borderRadius: 18, backgroundColor: Colors.dark.accent, alignItems: "center" as const, justifyContent: "center" as const, shadowColor: Colors.dark.accent, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 12, elevation: 8 },
 });
