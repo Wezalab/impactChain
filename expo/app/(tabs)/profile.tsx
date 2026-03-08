@@ -1,9 +1,11 @@
-import { Wallet, Shield, Bell, ExternalLink, ChevronRight, Copy, TrendingUp, TrendingDown } from "lucide-react-native";
+import { Wallet, Shield, Bell, ExternalLink, ChevronRight, Copy, TrendingUp, TrendingDown, LogOut } from "lucide-react-native";
 import React, { useCallback, useRef, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Animated, Platform } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Animated, Platform } from "react-native";
 import * as Haptics from "expo-haptics";
+import { router } from "expo-router";
 import Colors from "@/constants/colors";
 import { walletBalances } from "@/mocks/metrics";
+import { useAuth, shortenAddress } from "@/providers/AuthProvider";
 
 const MENU = [
   { id: "wallet", label: "Connected Wallets", sub: "Manage connections", icon: Wallet },
@@ -13,19 +15,50 @@ const MENU = [
 ];
 
 export default function ImpactChainProfile() {
+  const { wallet, disconnect } = useAuth();
   const fade = useRef(new Animated.Value(0)).current;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { Animated.timing(fade, { toValue: 1, duration: 500, useNativeDriver: true }).start(); }, []);
   const total = walletBalances.reduce((s, b) => s + b.usdValue, 0);
-  const copyAddr = useCallback(() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); Alert.alert("Copied", "Address copied"); }, []);
+  const copyAddr = useCallback(() => { if (Platform.OS !== "web") void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); Alert.alert("Copied", "Address copied"); }, []);
+
+  const handleDisconnect = useCallback(() => {
+    Alert.alert("Disconnect Wallet", "Are you sure you want to disconnect your wallet?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Disconnect",
+        style: "destructive",
+        onPress: async () => {
+          await disconnect();
+          router.replace("/login");
+        },
+      },
+    ]);
+  }, [disconnect]);
+
+  const networkColors: Record<string, string> = {
+    ethereum: "#627EEA",
+    starknet: "#E6A946",
+    polygon: "#8247E5",
+    celo: "#FCFF52",
+  };
 
   return (
     <Animated.ScrollView style={[st.container, { opacity: fade }]} contentContainerStyle={st.content} showsVerticalScrollIndicator={false}>
       <View style={st.profileCard}>
         <View style={st.avatarRow}>
-          <View style={st.avatar}><Text style={st.avatarText}>IC</Text></View>
+          <View style={st.avatar}><Text style={st.avatarText}>{wallet?.displayName?.charAt(0) ?? "W"}</Text></View>
           <View style={st.profileInfo}>
-            <Text style={st.profileName}>ImpactChain Org</Text>
-            <TouchableOpacity style={st.addressBtn} onPress={copyAddr}><Text style={st.addressText}>0x3eC1...8d22</Text><Copy size={12} color={Colors.dark.textMuted} /></TouchableOpacity>
+            <Text style={st.profileName}>{wallet?.displayName ?? "Wallet"}</Text>
+            <TouchableOpacity style={st.addressBtn} onPress={copyAddr}><Text style={st.addressText}>{wallet ? shortenAddress(wallet.address) : "Not connected"}</Text><Copy size={12} color={Colors.dark.textMuted} /></TouchableOpacity>
+            {wallet && (
+              <View style={st.walletBadgeRow}>
+                <View style={[st.walletNetworkBadge, { backgroundColor: (networkColors[wallet.network] ?? Colors.dark.accent) + "20" }]}>
+                  <View style={[st.walletNetworkDot, { backgroundColor: networkColors[wallet.network] ?? Colors.dark.accent }]} />
+                  <Text style={[st.walletNetworkText, { color: networkColors[wallet.network] ?? Colors.dark.accent }]}>{wallet.network.charAt(0).toUpperCase() + wallet.network.slice(1)}</Text>
+                </View>
+              </View>
+            )}
           </View>
         </View>
         <View style={st.profileStats}>
@@ -59,6 +92,10 @@ export default function ImpactChainProfile() {
           </TouchableOpacity>
         ); })}
       </View>
+      <TouchableOpacity style={st.disconnectBtn} activeOpacity={0.7} onPress={handleDisconnect} testID="disconnect-btn">
+        <LogOut size={18} color={Colors.dark.error} />
+        <Text style={st.disconnectText}>Disconnect Wallet</Text>
+      </TouchableOpacity>
       <View style={st.footer}><Text style={st.footerText}>ImpactChain v1.0.0</Text><Text style={st.footerSub}>Built for UNICEF Blockchain Ventures 2026</Text></View>
     </Animated.ScrollView>
   );
@@ -102,7 +139,13 @@ const st = StyleSheet.create({
   menuTextWrap: { flex: 1 },
   menuLabel: { fontSize: 15, fontWeight: "600" as const, color: Colors.dark.text },
   menuSub: { fontSize: 12, color: Colors.dark.textMuted, marginTop: 1 },
-  footer: { alignItems: "center", marginTop: 32, paddingBottom: 20 },
+  walletBadgeRow: { flexDirection: "row", marginTop: 6 },
+  walletNetworkBadge: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
+  walletNetworkDot: { width: 6, height: 6, borderRadius: 3 },
+  walletNetworkText: { fontSize: 11, fontWeight: "600" as const },
+  disconnectBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginHorizontal: 20, marginTop: 24, paddingVertical: 14, borderRadius: 14, backgroundColor: Colors.dark.errorMuted, borderWidth: 1, borderColor: Colors.dark.error + "30" },
+  disconnectText: { fontSize: 15, fontWeight: "600" as const, color: Colors.dark.error },
+  footer: { alignItems: "center", marginTop: 24, paddingBottom: 20 },
   footerText: { fontSize: 13, color: Colors.dark.textMuted, fontWeight: "500" as const },
   footerSub: { fontSize: 11, color: Colors.dark.textMuted, marginTop: 2 },
 });
