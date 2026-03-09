@@ -55,6 +55,7 @@ export default function ImpactChainDashboard() {
   const goTxs = useCallback(() => { router.push("/(tabs)/transactions"); }, []);
 
   return (
+    <>
     <ScrollView style={st.container} contentContainerStyle={st.content} showsVerticalScrollIndicator={false} testID="dashboard-scroll">
       <Animated.View style={[st.heroSection, { opacity: headerFade }]}>
         <View style={st.heroTop}>
@@ -103,6 +104,7 @@ export default function ImpactChainDashboard() {
         <Send size={22} color="#fff" />
       </TouchableOpacity>
     </View>
+    </>
   );
 }
 
