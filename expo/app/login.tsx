@@ -191,7 +191,7 @@ export default function LoginScreen() {
 
         <Animated.View style={[st.footerSection, { opacity: featuresFade }]}>
           <Text style={st.footerText}>
-            Built for UNICEF Blockchain Ventures 2026
+            Built by Weza lab
           </Text>
           <View style={st.footerDivider} />
           <Text style={st.footerSub}>

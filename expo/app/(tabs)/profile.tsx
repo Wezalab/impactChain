@@ -132,7 +132,7 @@ export default function ImpactChainProfile() {
         <LogOut size={18} color={Colors.dark.error} />
         <Text style={st.disconnectText}>Disconnect Wallet</Text>
       </TouchableOpacity>
-      <View style={st.footer}><Text style={st.footerText}>ImpactChain v1.0.0</Text><Text style={st.footerSub}>Built for UNICEF Blockchain Ventures 2026</Text></View>
+      <View style={st.footer}><Text style={st.footerText}>ImpactChain v1.0.0</Text><Text style={st.footerSub}>Built by Weza lab </Text></View>
     </Animated.ScrollView>
   );
 }
