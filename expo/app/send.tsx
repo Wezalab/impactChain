@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ArrowLeft, ChevronDown, Scan, Send, AlertCircle, Check, Wallet, ArrowUpRight } from "lucide-react-native";
 import React, { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import {
@@ -47,14 +47,16 @@ const SUGGESTED_RECIPIENTS: Recipient[] = projects
 export default function SendPaymentScreen() {
   const insets = useSafeAreaInsets();
   const { wallet } = useAuth();
+  const params = useLocalSearchParams<{ projectId?: string; projectName?: string; projectAddress?: string }>();
 
   const [step, setStep] = useState<Step>("input");
   const [amount, setAmount] = useState<string>("");
-  const [recipientAddr, setRecipientAddr] = useState<string>("");
-  const [recipientLabel, setRecipientLabel] = useState<string>("");
+  const [recipientAddr, setRecipientAddr] = useState<string>(params.projectAddress ?? "");
+  const [recipientLabel, setRecipientLabel] = useState<string>(params.projectName ?? "");
   const [selectedToken, setSelectedToken] = useState<WalletBalance>(walletBalances[1]);
   const [showTokenPicker, setShowTokenPicker] = useState<boolean>(false);
-  const [memo, setMemo] = useState<string>("");
+  const [memo, setMemo] = useState<string>(params.projectName ? `Donation to ${params.projectName}` : "");
+  const isProjectFunding = !!params.projectId;
 
   const fadeIn = useRef(new Animated.Value(0)).current;
   const slideUp = useRef(new Animated.Value(40)).current;
@@ -193,7 +195,7 @@ export default function SendPaymentScreen() {
         <TouchableOpacity style={st.backBtn} onPress={handleBack} testID="back-btn">
           <ArrowLeft size={22} color={Colors.dark.text} />
         </TouchableOpacity>
-        <Text style={st.headerTitle}>{step === "review" ? "Review Payment" : "Send Payment"}</Text>
+        <Text style={st.headerTitle}>{step === "review" ? "Review Payment" : isProjectFunding ? "Fund Project" : "Send Payment"}</Text>
         <View style={st.headerRight} />
       </View>
 

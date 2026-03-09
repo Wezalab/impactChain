@@ -1,6 +1,6 @@
 import { useLocalSearchParams, router } from "expo-router";
 import { Stack } from "expo-router";
-import { MapPin, Users, ShieldCheck, Target, ExternalLink } from "lucide-react-native";
+import { MapPin, Users, ShieldCheck, Target, ExternalLink, Send } from "lucide-react-native";
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Linking } from "react-native";
 import { Image } from "expo-image";
@@ -31,6 +31,17 @@ export default function ProjectDetailScreen() {
           <View style={st.statCard}><ShieldCheck size={20} color={Colors.dark.accent} /><Text style={st.statValue}>{project.verifications}</Text><Text style={st.statLabel}>Verifications</Text></View>
           <View style={st.statCard}><Target size={20} color={Colors.dark.accent} /><Text style={st.statValue}>{project.milestonesCompleted}/{project.milestones}</Text><Text style={st.statLabel}>Milestones</Text></View>
         </View>
+        {project.status === "active" && (
+          <TouchableOpacity
+            style={st.fundBtn}
+            activeOpacity={0.8}
+            onPress={() => router.push({ pathname: "/send", params: { projectId: project.id, projectName: project.name, projectAddress: `0x${project.id.replace("proj-", "")}...${project.team.slice(0, 4).toLowerCase()}` } })}
+            testID="fund-project-btn"
+          >
+            <Send size={18} color="#fff" />
+            <Text style={st.fundBtnText}>Fund this Project</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity style={st.explorerBtn} onPress={() => Linking.openURL("https://etherscan.io")}><ExternalLink size={16} color={Colors.dark.accent} /><Text style={st.explorerLabel}>View on Block Explorer</Text></TouchableOpacity>
         <TouchableOpacity style={st.verifyBtn} onPress={() => router.push("/modal")}><Text style={st.verifyLabel}>Verify Transaction</Text></TouchableOpacity>
       </View>
@@ -62,6 +73,8 @@ const st = StyleSheet.create({
   statCard: { flex: 1, backgroundColor: Colors.dark.surface, borderRadius: 14, padding: 14, alignItems: "center", borderWidth: 1, borderColor: Colors.dark.border, gap: 6 },
   statValue: { fontSize: 18, fontWeight: "700" as const, color: Colors.dark.text },
   statLabel: { fontSize: 11, color: Colors.dark.textMuted },
+  fundBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, paddingVertical: 16, borderRadius: 16, backgroundColor: Colors.dark.accent, marginBottom: 12, shadowColor: Colors.dark.accent, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 10, elevation: 6 },
+  fundBtnText: { fontSize: 16, fontWeight: "700" as const, color: "#FFFFFF" },
   explorerBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 14, borderRadius: 14, borderWidth: 1, borderColor: Colors.dark.accent, backgroundColor: Colors.dark.accentMuted, marginBottom: 10 },
   explorerLabel: { fontSize: 15, color: Colors.dark.accent, fontWeight: "600" as const },
   verifyBtn: { alignItems: "center", justifyContent: "center", paddingVertical: 14, borderRadius: 14, backgroundColor: Colors.dark.accent },
