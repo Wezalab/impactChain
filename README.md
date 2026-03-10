@@ -3,11 +3,11 @@
 **Blockchain for Social Good** — A mobile-first platform that brings transparency, accountability, and trust to humanitarian aid and social impact funding through blockchain technology.
 
 <p align="center">
-  <img src="docs/screenshots/login.png" width="180" alt="Wallet Login" />
-  <img src="docs/screenshots/dashboard.png" width="180" alt="Impact Dashboard" />
-  <img src="docs/screenshots/projects.png" width="180" alt="Project Explorer" />
-  <img src="docs/screenshots/project-detail.png" width="180" alt="Project Detail" />
-  <img src="docs/screenshots/fund-project.png" width="180" alt="Fund a Project" />
+  <img src="expo/docs/screenshots/login.png" width="180" alt="Wallet Login" />
+  <img src="expo/docs/screenshots/dashboard.png" width="180" alt="Impact Dashboard" />
+  <img src="expo/docs/screenshots/projects.png" width="180" alt="Project Explorer" />
+  <img src="expo/docs/screenshots/project-detail.png" width="180" alt="Project Detail" />
+  <img src="expo/docs/screenshots/fund-project.png" width="180" alt="Fund a Project" />
 </p>
 
 ---
@@ -41,35 +41,35 @@ ImpactChain leverages distributed ledger technology to create an end-to-end tran
 Connect via MetaMask, Coinbase Wallet, WalletConnect (EVM), or Argent and Braavos (StarkNet).
 
 <p align="center">
-  <img src="docs/screenshots/login.png" width="300" alt="Wallet Login" />
+  <img src="expo/docs/screenshots/login.png" width="300" alt="Wallet Login" />
 </p>
 
 ### Impact Dashboard
 Real-time metrics: total funded amount, beneficiaries reached, on-chain transactions, and verification count.
 
 <p align="center">
-  <img src="docs/screenshots/dashboard.png" width="300" alt="Impact Dashboard" />
+  <img src="expo/docs/screenshots/dashboard.png" width="300" alt="Impact Dashboard" />
 </p>
 
 ### Project Explorer
 Browse and filter active social impact projects across education, health, water, agriculture, and governance.
 
 <p align="center">
-  <img src="docs/screenshots/projects.png" width="300" alt="Project Explorer" />
+  <img src="expo/docs/screenshots/projects.png" width="300" alt="Project Explorer" />
 </p>
 
 ### Project Detail
 Transparent funding progress, beneficiary count, verifications, milestones, and a direct link to the block explorer.
 
 <p align="center">
-  <img src="docs/screenshots/project-detail.png" width="300" alt="Project Detail" />
+  <img src="expo/docs/screenshots/project-detail.png" width="300" alt="Project Detail" />
 </p>
 
 ### Fund a Project
 Donate directly in crypto with quick-select amounts, project selection, and full payment review before submitting.
 
 <p align="center">
-  <img src="docs/screenshots/fund-project.png" width="300" alt="Fund a Project" />
+  <img src="expo/docs/screenshots/fund-project.png" width="300" alt="Fund a Project" />
 </p>
 
 ---
@@ -177,7 +177,7 @@ expo/
 ├── constants/                  # Theme and config
 ├── hooks/                      # Custom hooks
 ├── assets/                     # Images and icons
-├── docs/screenshots/           # App screenshots
+├── expo/docs/screenshots/           # App screenshots
 └── app.json                    # Expo config
 ```
 
@@ -219,7 +219,7 @@ eas submit --platform android
 
 ## License
 
-This project is licensed under the [MIT License](../LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
