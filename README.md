@@ -35,6 +35,20 @@ ImpactChain leverages distributed ledger technology to create an end-to-end tran
 
 ---
 
+## Demo Videos
+
+<p align="center">
+  <a href="https://youtu.be/tM80a0o6Wvg?si=cLmZw3kiB8MoGJmm">
+    <img src="https://img.youtube.com/vi/tM80a0o6Wvg/0.jpg" width="45%" alt="ImpactChain Demo Video 1" />
+  </a>
+  &nbsp;
+  <a href="https://youtu.be/SQ6wjr2zbS4?si=f6UiAu4U3xS1I7wr">
+    <img src="https://img.youtube.com/vi/SQ6wjr2zbS4/0.jpg" width="45%" alt="ImpactChain Demo Video 2" />
+  </a>
+</p>
+
+---
+
 ## Screenshots
 
 ### Wallet Connection
